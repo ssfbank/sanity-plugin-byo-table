@@ -1,12 +1,11 @@
 import uuid from '@sanity/uuid';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Table from './components/table';
+import Table from './table';
 import PatchEvent, { set, unset } from 'part:@sanity/form-builder/patch-event';
 import FieldSet from 'part:@sanity/components/fieldsets/default';
 import ButtonCollection from 'part:@sanity/components/buttons/button-collection';
 import Button from 'part:@sanity/components/buttons/default';
-// import RowSchemaType from 'part:@ssfbank/sanity-plugin-byo-table/row-schema-type';
 
 const createPatchFrom = value => {
   return PatchEvent.from(set(value));
@@ -138,8 +137,6 @@ export default class TableInput extends React.Component {
       <FieldSet
         legend={title}
         description={description}
-        isCollapsible={options.collapsible}
-        isCollapsed={options.collapsed}
       >
         {table}
         {buttons}

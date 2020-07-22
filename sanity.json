@@ -6,6 +6,9 @@
   "parts": [
     {
       "name": "part:@ssfbank/sanity-plugin-byo-table/rows-input",
+      "description": "Row input"
+    },
+    {
       "implements": "part:@ssfbank/sanity-plugin-byo-table/rows-input",
       "path": "rows-input.js"
     }
