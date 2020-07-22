@@ -1,0 +1,23 @@
+{
+  "name": "sanity-plugin-byo-table",
+  "version": "1.0.0",
+  "description": "Table schema type and input component for Sanity CMS",
+  "main": "lib/schema/table.js",
+  "scripts": {
+    "prepare": "babel src -d lib -D"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ssfbank/sanity-plugin-byo-table.git"
+  },
+  "author": "Asbjørn Lucassen <asbjorn.lucassen@ssf.no>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "styled-components": "^5.1.1"
+  }
+}
