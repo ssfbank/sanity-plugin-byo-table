@@ -1,6 +1,6 @@
 {
   "name": "@ssfbank/sanity-plugin-byo-table",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Input component for your own table schema type for Sanity CMS",
   "main": "lib/schema/table.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "prop-types": "^15.7",
-    "@sanity/uuid": "^1.149.16"
+    "@sanity/uuid": "^1.149.16",
+    "react-icons": "^2.2.7"
   }
 }
