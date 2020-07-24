@@ -38,11 +38,11 @@ export default {
 };
 ```
 
-There is some rules to the schema defined and used by this plugin.
-- There needs to be a 'tableRow' type with a field called 'cells' which is an array of string. Having more than one field in 'tableRow' is untested and will probably not work.
-- The table document can be any shape you like, but the field using the rows-input component needs to be an array of 'tableRow'.
+You can use both strings and sanity objects as cell value. 
+There are no restrictions on the naming of the schema types involved, but 'rows' need to be an array of the row object, and the row object needs to only have one field of type array.
 
 To ease implementation you should probably just copy-paste the contents of /example-schema into your sanity repo /schema/whatever-table. Then declare those table components like you usually would.
+The examples are not totally complete.
 
 ## Migrating from sanity-plugin-table
 
