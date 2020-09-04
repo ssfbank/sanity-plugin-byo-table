@@ -2,6 +2,9 @@
 
 [Sanity](https://www.sanity.io/) plugin that supplies the react editor for a user defined table and row. Basically, bring your own schema.
 
+<img src="./docs/byo-table-demo.gif">
+
+
 This repo is forked from [sanity-plugin-table](https://www.github.com/rdunk/sanity-plugin-table)
 
 ## Installing
