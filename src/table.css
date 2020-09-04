@@ -4,15 +4,26 @@
   margin-bottom: 1rem;
 }
 
+.row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: stretch;
+}
+
 .cell {
   border: 1px solid rgb(230, 230, 230);
-  padding: 0
+  padding: 0;
+  flex: 1 0;
+  display: flex;
+  align-items: stretch;
 }
 
 .objectCell {
   border: 1px solid rgb(230, 230, 230);
   padding: 5px;
-  max-width: 5em;
+  flex: 1 0;
+  display: flex;
+  align-items: stretch;
 }
 
 .input {
@@ -21,6 +32,8 @@
   border: none;
   padding: 0.5em;
   outline: none;
+  display: flex;
+  align-items: stretch;
 }
 
 .objectInput {
@@ -31,6 +44,12 @@
   outline: none;
   overflow: hidden;
   font-size: 0.8em;
+  display: flex;
+  align-items: stretch;
+}
+.objectInput span {
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .objectInput:focus {
@@ -52,10 +71,14 @@
 
 .rowDelete {
   padding-left: 0.5em;
+  display: flex;
+  align-items: center;
 }
 
 .colDelete {
   padding-top: 0.5em;
+  flex: 1;
+  margin: 0 1rem;
 }
 
 .rowDelete>span,
@@ -76,3 +99,22 @@
   background: #ff0000;
 }
 
+.dragHandle {
+  cursor: ns-resize;
+  font-size: 1.5em;
+  display: block;
+  opacity: 0.5;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  padding: 1rem 0 1rem 0;
+  z-index: 1;
+}
+
+.dragHandle:hover {
+  opacity: 1;
+}
+
+.dragHandle svg {
+  font-size: inherit;
+  display: block;
+}

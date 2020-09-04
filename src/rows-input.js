@@ -2,9 +2,10 @@ import uuid from '@sanity/uuid';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Table from './table';
-import PatchEvent, { set, unset } from 'part:@sanity/form-builder/patch-event';
+import PatchEvent, { set, unset, insert } from 'part:@sanity/form-builder/patch-event';
 import ButtonGrid from 'part:@sanity/components/buttons/button-grid';
 import Button from 'part:@sanity/components/buttons/default';
+
 
 const createPatchFrom = value => {
   return PatchEvent.from(set(value));
@@ -103,6 +104,28 @@ class RowsInput extends React.Component {
     return onChange(createPatchFrom(newValue));
   };
 
+  handleSortEnd = ({newIndex, oldIndex}) => {
+    const {value, onChange} = this.props
+    const item = value[oldIndex]
+    const refItem = value[newIndex]
+    if (!item._key || !refItem._key) {
+      // eslint-disable-next-line no-console
+      console.error(
+        'Neither the item you are moving nor the item you are moving to have a key. Cannot continue.'
+      )
+      return
+    }
+    if (oldIndex === newIndex || item._key === refItem._key) {
+      return
+    }
+    onChange(
+      PatchEvent.from(
+        unset([{_key: item._key}]),
+        insert([item], oldIndex > newIndex ? 'before' : 'after', [{_key: refItem._key}])
+      )
+    )
+  }
+
   addColumn = e => {
     const { value, onChange } = this.props;
     const { cellsFieldName, cellType } = this.getTableTypes();
@@ -156,6 +179,7 @@ class RowsInput extends React.Component {
           removeColumn={this.removeColumn}
           removeRow={this.removeRow}
           tableTypes={this.getTableTypes()}
+          handleSortEnd={this.handleSortEnd}
         />
       ) : null;
 

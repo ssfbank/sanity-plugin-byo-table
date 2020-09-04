@@ -7,9 +7,21 @@ import EditIcon from 'react-icons/lib/md/edit';
 import {FormBuilderInput} from 'part:@sanity/form-builder'
 import PopOver from 'part:@sanity/components/dialogs/popover';
 import DialogContent from 'part:@sanity/components/dialogs/content';
+import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc'
+import DragBarsIcon from 'part:@sanity/base/bars-icon'
 
+const DragHandle = sortableHandle(() => 
+<span class={styles.dragHandle}><DragBarsIcon/></span>
+);
 
-const Table = ({ rows, updateStringCell, onEvent, removeColumn, removeRow, tableTypes }) => {
+const SortableItem = sortableElement(({value}) => (
+  <div class={styles.row}>
+    <DragHandle />
+    {value}
+  </div>
+));
+
+const Table = ({ rows, updateStringCell, onEvent, removeColumn, removeRow, tableTypes, handleSortEnd }) => {
   if (!rows || !rows.length) return null;
   const {  cellsFieldName, cellType: propCellType } = tableTypes;
   const [activeObjectEdit, setActiveObjectEdit] = useState(null);
@@ -20,20 +32,20 @@ const Table = ({ rows, updateStringCell, onEvent, removeColumn, removeRow, table
   };
   // Button to remove row
   const renderRowRemover = index => (
-    <td className={styles.rowDelete}>
+    <div className={styles.rowDelete}>
       <span onClick={() => removeRow(index)} />
-    </td>
+    </div>
   );
 
   // Button to remove column
   const renderColumnRemover = index => (
-    <td key={index} className={styles.colDelete}>
+    <div key={index} className={styles.colDelete}>
       <span onClick={() => removeColumn(index)} />
-    </td>
+    </div>
   );
 
   const renderColumnRemovers = row => (
-    <tr>{row[cellsFieldName].map((c, i) => renderColumnRemover(i))}</tr>
+    <div class={styles.row}>{row[cellsFieldName].map((c, i) => renderColumnRemover(i))}</div>
   );
 
 
@@ -42,7 +54,7 @@ const Table = ({ rows, updateStringCell, onEvent, removeColumn, removeRow, table
     const cellStyles = isStringInput ? styles.cell : styles.objectCell;
 
     return (
-      <td key={`cell-${cellIndex}`} className={cellStyles}>
+      <div key={`cell-${cellIndex}`} className={cellStyles}>
         { isStringInput &&
           <input
           className={styles.input}
@@ -59,19 +71,27 @@ const Table = ({ rows, updateStringCell, onEvent, removeColumn, removeRow, table
             <Preview value={value} type={cellType} layout="inline" />
           </Button>
         }
-      </td>
+      </div>
     );
   }
 
   const renderRow = (row, rowIndex) => {
     const renderCell = renderRowCell(rowIndex);
-    return (
-      <tr key={`row-${rowIndex}`}>
+
+    const inners = (
+      <>
         {row[cellsFieldName].map(renderCell)}
         {renderRowRemover(rowIndex)}
-      </tr>
+      </>
+    )
+
+    return (
+      <SortableItem key={`row-${rowIndex}`} index={rowIndex} value={inners} />
     );
   };
+  const SortableContainer = sortableContainer(({children}) => {
+    return <div>{children}</div>;
+  });
 
   return (
     <>
@@ -102,12 +122,12 @@ const Table = ({ rows, updateStringCell, onEvent, removeColumn, removeRow, table
         </PopOver>
     )}
     {
-      <table className={styles.table}>
-        <tbody>
-        {rows.map(renderRow)}
-        {renderColumnRemovers(rows[0])}
-        </tbody>
-      </table>
+      <div className={styles.table}>
+        <SortableContainer onSortEnd={handleSortEnd} useDragHandle>
+          {rows.map(renderRow)}
+          {renderColumnRemovers(rows[0])}
+        </SortableContainer>
+      </div>
     }
 
     </>
