@@ -21,9 +21,11 @@
 .objectCell {
   border: 1px solid rgb(230, 230, 230);
   padding: 5px;
-  flex: 1 0;
-  display: flex;
-  align-items: stretch;
+  box-sizing: border-box;
+  /* flex: 1 0; */
+  /* display: flex;
+  align-items: stretch; */
+  flex: 1 1;
 }
 
 .input {
@@ -38,16 +40,20 @@
 
 .objectInput {
   box-sizing: border-box;
-  width: 100%;
   border: none;
-  padding: 0.5em;
+  width: 100%;
   outline: none;
-  overflow: hidden;
+  /* overflow: hidden; */
   font-size: 0.8em;
-  display: flex;
-  align-items: stretch;
+  /* display: flex;
+  align-items: stretch; */
 }
-.objectInput span {
+
+.objectPreview {
+  width: 8em;
+}
+
+.objectPreview span {
   word-wrap: break-word;
   word-break: break-all;
 }
