@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import styles from './table.css';
 import Button from 'part:@sanity/components/buttons/default';
 import Preview from 'part:@sanity/base/preview'
-import { EditIcon } from 'react-icons/md';
 import {FormBuilderInput} from 'part:@sanity/form-builder'
 import PopoverDialog from 'part:@sanity/components/dialogs/popover';
-import DefaultDialog from 'part:@sanity/components/dialogs/content';
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc'
 import DragBarsIcon from 'part:@sanity/base/bars-icon'
 
@@ -23,9 +21,12 @@ const SortableItem = sortableElement(({value}) => (
 
 const Table = ({ rows, updateStringCell, onEvent, removeColumn, removeRow, tableTypes, handleSortEnd }) => {
   if (!rows || !rows.length) return null;
-  const {  cellsFieldName, cellType } = tableTypes;
+  const {  cellsFieldName, cellType: propCellType } = tableTypes;
   const [activeObjectEdit, setActiveObjectEdit] = useState(null);
-
+  const cellType = {
+    icon: false,
+    ...propCellType
+  };
   // Button to remove row
   const renderRowRemover = index => (
     <div className={styles.rowDelete}>

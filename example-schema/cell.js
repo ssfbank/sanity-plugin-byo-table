@@ -1,33 +1,23 @@
-import safeGet from 'lodash/get';
-
 export default {
     title: 'Table Cell',
-    name: 'richTableCell',
+    name: 'cell',
     type: 'object',
     fields: [
         {
             name: 'value',
-            type: 'localeString'
+            title: 'The value',
+            type: 'string'
         },
         {
-            name: 'linkUnion',
-            title: 'Link (optional)',
-            type: 'reference',
-            to: [
-                { type: 'link' }
-            ]
+            name: 'anotherValue',
+            title: 'More value',
+            type: 'number'
         }
     ],
     preview: {
         select: {
-            value: 'value'
-        },
-        prepare(selection) {
-            const txt = safeGet(selection, 'value.nn') || safeGet(selection, 'value.en') || '<Empty>';
-            return {
-                title: txt
-            }
+            title: 'value',
+            subtitle: 'anotherValue'
         }
     }
-  };
-  
+};

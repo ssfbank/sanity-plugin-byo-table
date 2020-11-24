@@ -1,4 +1,4 @@
-import uuid from '@sanity/uuid';
+import {uuid} from '@sanity/uuid';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Table from './table';

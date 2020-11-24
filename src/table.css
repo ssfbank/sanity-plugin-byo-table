@@ -22,10 +22,10 @@
   border: 1px solid rgb(230, 230, 230);
   padding: 5px;
   box-sizing: border-box;
-  /* flex: 1 0; */
-  /* display: flex;
-  align-items: stretch; */
-  flex: 1 1;
+  display: flex;
+  align-items: center;
+  flex: 1 0;
+  overflow: hidden;
 }
 
 .input {
@@ -43,19 +43,19 @@
   border: none;
   width: 100%;
   outline: none;
-  /* overflow: hidden; */
+  overflow: hidden;
   font-size: 0.8em;
-  /* display: flex;
-  align-items: stretch; */
 }
 
 .objectPreview {
   width: 8em;
 }
 
-.objectPreview span {
+.objectInput span {
+  overflow: hidden;
   word-wrap: break-word;
   word-break: break-all;
+  text-overflow: ellipsis;
 }
 
 .objectInput:focus {
