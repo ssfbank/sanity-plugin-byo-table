@@ -21,9 +21,11 @@
 .objectCell {
   border: 1px solid rgb(230, 230, 230);
   padding: 5px;
-  flex: 1 0;
+  box-sizing: border-box;
   display: flex;
-  align-items: stretch;
+  align-items: center;
+  flex: 1 0;
+  overflow: hidden;
 }
 
 .input {
@@ -38,18 +40,22 @@
 
 .objectInput {
   box-sizing: border-box;
-  width: 100%;
   border: none;
-  padding: 0.5em;
+  width: 100%;
   outline: none;
   overflow: hidden;
   font-size: 0.8em;
-  display: flex;
-  align-items: stretch;
 }
+
+.objectPreview {
+  width: 8em;
+}
+
 .objectInput span {
+  overflow: hidden;
   word-wrap: break-word;
   word-break: break-all;
+  text-overflow: ellipsis;
 }
 
 .objectInput:focus {

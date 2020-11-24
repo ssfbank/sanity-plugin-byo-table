@@ -2,20 +2,21 @@ import RowsInput from 'part:@ssfbank/sanity-plugin-byo-table/rows-input';
 
 export default {
   title: 'Table',
-  name: 'richTable',
+  name: 'table',
   type: 'document',
   fields: [
     {
       name: 'title',
       type: 'string',
-      title: 'Title (internal)'
+      title: 'Title'
     },
     {
-      name: 'headerRow',
+      name: 'totallyUnrelatedData',
       type: 'array',
+      description: 'Table related data not involved in the plugin.',
       of: [
         {
-          type: 'localeString',
+          type: 'string',
         }
       ]
     },
@@ -25,7 +26,7 @@ export default {
       type: 'array',
       of: [
         {
-          type: 'richTableRow',
+          type: 'row',
         }
       ],
       inputComponent: RowsInput

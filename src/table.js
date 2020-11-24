@@ -3,19 +3,17 @@ import PropTypes from 'prop-types';
 import styles from './table.css';
 import Button from 'part:@sanity/components/buttons/default';
 import Preview from 'part:@sanity/base/preview'
-import EditIcon from 'react-icons/lib/md/edit';
 import {FormBuilderInput} from 'part:@sanity/form-builder'
-import PopOver from 'part:@sanity/components/dialogs/popover';
-import DialogContent from 'part:@sanity/components/dialogs/content';
+import PopoverDialog from 'part:@sanity/components/dialogs/popover';
 import {sortableContainer, sortableElement, sortableHandle} from 'react-sortable-hoc'
 import DragBarsIcon from 'part:@sanity/base/bars-icon'
 
 const DragHandle = sortableHandle(() => 
-<span class={styles.dragHandle}><DragBarsIcon/></span>
+<span className={styles.dragHandle}><DragBarsIcon/></span>
 );
 
 const SortableItem = sortableElement(({value}) => (
-  <div class={styles.row}>
+  <div className={styles.row}>
     <DragHandle />
     {value}
   </div>
@@ -25,9 +23,8 @@ const Table = ({ rows, updateStringCell, onEvent, removeColumn, removeRow, table
   if (!rows || !rows.length) return null;
   const {  cellsFieldName, cellType: propCellType } = tableTypes;
   const [activeObjectEdit, setActiveObjectEdit] = useState(null);
-
   const cellType = {
-    icon: EditIcon,
+    icon: false,
     ...propCellType
   };
   // Button to remove row
@@ -45,7 +42,7 @@ const Table = ({ rows, updateStringCell, onEvent, removeColumn, removeRow, table
   );
 
   const renderColumnRemovers = row => (
-    <div class={styles.row}>{row[cellsFieldName].map((c, i) => renderColumnRemover(i))}</div>
+    <div className={styles.row}>{row[cellsFieldName].map((c, i) => renderColumnRemover(i))}</div>
   );
 
 
@@ -68,27 +65,16 @@ const Table = ({ rows, updateStringCell, onEvent, removeColumn, removeRow, table
             rowIndex,
             cellIndex
           })}>
-            <Preview value={value} type={cellType} layout="inline" />
+            <Preview className={styles.objectPreview} 
+            value={value} 
+            type={cellType} 
+            layout="inline" />
           </Button>
         }
       </div>
     );
   }
 
-  const renderRow = (row, rowIndex) => {
-    const renderCell = renderRowCell(rowIndex);
-
-    const inners = (
-      <>
-        {row[cellsFieldName].map(renderCell)}
-        {renderRowRemover(rowIndex)}
-      </>
-    )
-
-    return (
-      <SortableItem key={`row-${rowIndex}`} index={rowIndex} value={inners} />
-    );
-  };
   const SortableContainer = sortableContainer(({children}) => {
     return <div>{children}</div>;
   });
@@ -96,12 +82,12 @@ const Table = ({ rows, updateStringCell, onEvent, removeColumn, removeRow, table
   return (
     <>
     { activeObjectEdit && (
-        <PopOver
+        <PopoverDialog
         onBlur={() => setActiveObjectEdit(null)}
         onClickOutside={() => setActiveObjectEdit(null)}
         onClose={() => setActiveObjectEdit(null)}
+        size={'large'} padding={'large'}
         >
-          <DialogContent size={'large'} padding={'large'}>
             <FormBuilderInput
               type={cellType}
               value={rows[activeObjectEdit.rowIndex].cells[activeObjectEdit.cellIndex]}
@@ -118,13 +104,25 @@ const Table = ({ rows, updateStringCell, onEvent, removeColumn, removeRow, table
               onBlur={() => {}}
               onFocus={() => {}}
             />
-            </DialogContent>
-        </PopOver>
+        </PopoverDialog>
     )}
     {
       <div className={styles.table}>
         <SortableContainer onSortEnd={handleSortEnd} useDragHandle>
-          {rows.map(renderRow)}
+          {rows.map((row, rowIndex) => {
+            const renderCell = renderRowCell(rowIndex);
+
+            const inners = (
+              <>
+                {row[cellsFieldName].map(renderCell)}
+                {renderRowRemover(rowIndex)}
+              </>
+            )
+
+            return (
+              <SortableItem key={`row-${rowIndex}`} index={rowIndex} value={inners} />
+            );
+        })}
           {renderColumnRemovers(rows[0])}
         </SortableContainer>
       </div>

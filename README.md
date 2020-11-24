@@ -4,20 +4,66 @@
 
 <img src="./docs/byo-table-demo.gif">
 
-
 This repo is forked from [sanity-plugin-table](https://www.github.com/rdunk/sanity-plugin-table)
 
-## Installing
+## Getting started
 
-Install using the [Sanity CLI](https://www.sanity.io/docs/cli).
+1. Install using the [Sanity CLI](https://www.sanity.io/docs/cli).
 
 ```
 sanity install @ssfbank/sanity-plugin-byo-table
 ```
 
-## Usage
+2. Define your table schema
 
-You need to define the schema types yourself and refer to this plugin as an input component there:
+Start with the cell level of the table, which should be an object.
+The name of this cell object can be anything.
+
+```javascript
+export default {
+    title: 'Table Cell',
+    name: 'cell',
+    type: 'object',
+    fields: [
+        {
+            name: 'value',
+            title: 'The value',
+            type: 'string'
+        },
+        {
+            name: 'anotherValue',
+            title: 'More value',
+            type: 'number'
+        }
+    ],
+    preview: {
+        select: {
+            title: 'value',
+            subtitle: 'anotherValue'
+        }
+    }
+};
+```
+
+Define the row level. This is restricted to have only one field and that should be an array of the cell object.
+The name of this table row object can be anything.
+
+```javascript
+export default {
+  title: 'Table Row',
+  name: 'row',
+  type: 'object',
+  fields: [
+    {
+        name: 'cells',
+        type: 'array',
+        of: [{ type: 'cell' }]
+    }
+  ]
+};
+```
+
+The actual document(or object) where you want a table should have a field of type array of the row object. It also needs to have input component RowsInput.
 
 ```javascript
 import RowsInput from 'part:@ssfbank/sanity-plugin-byo-table/rows-input';
@@ -25,27 +71,66 @@ import RowsInput from 'part:@ssfbank/sanity-plugin-byo-table/rows-input';
 export default {
   title: 'Table',
   name: 'table',
-  type: 'object',
+  type: 'document',
   fields: [
     {
+      name: 'title',
+      type: 'string',
+      title: 'Title'
+    },
+    {
+      name: 'totallyRelatedData',
+      type: 'array',
+      description: 'Table related data not involved in the plugin.',
+      of: [
+        {
+          type: 'string',
+        }
+      ]
+    },
+    {
       name: 'rows',
+      title: 'Table Rows',
       type: 'array',
       of: [
         {
-          type: 'tableRow',
+          type: 'row',
         }
       ],
       inputComponent: RowsInput
     }
-  ]
+  ],
+  preview: {
+    select: {
+      title: 'title'
+    }
+  }
 };
 ```
 
-You can use both strings and sanity objects as cell value. 
-There are no restrictions on the naming of the schema types involved, but 'rows' need to be an array of the row object, and the row object needs to only have one field of type array.
+Finally, register these types in the schema:
 
-To ease implementation you should probably just copy-paste the contents of /example-schema into your sanity repo /schema/whatever-table. Then declare those table components like you usually would.
-The examples are not totally complete.
+```javascript
+import cell from './example-schema/cell';
+import row from './example-schema/row';
+import table from './example-schema/table';
+
+const tableTypes = [cell, row, table];
+
+const allSchemaTypes = schemaTypes
+  .concat(tableTypes);
+export default createSchema({
+  name: 'default',
+  types: allSchemaTypes,
+});
+```
+
+These examples are attached under /example-schema
+
+## Known Issues
+
+- Only tested on chrome, so quite possible some quirks on other browsers.
+- There is no horizontal scroll styling, so alot of columns will look kind of rubbish.
 
 ## Migrating from sanity-plugin-table
 
