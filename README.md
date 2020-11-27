@@ -129,6 +129,8 @@ These examples are attached under /example-schema
 
 ## Known Issues
 
+- Performance is weak in general and seems to scale negatively with amount of cells. PRs welcome.
+- Block content works in cells, but object marks in the blocks(like links, urls etc) can not be edited as the popover is not visible. This may be a sanity bug, PRs welcome.
 - Only tested on chrome, so quite possible some quirks on other browsers.
 - There is no horizontal scroll styling, so alot of columns will look kind of rubbish.
 
