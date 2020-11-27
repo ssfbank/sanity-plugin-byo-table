@@ -1,10 +1,11 @@
 {
   "name": "@ssfbank/sanity-plugin-byo-table",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Input component for your own table schema type for Sanity CMS",
   "main": "lib/schema/table.js",
   "scripts": {
-    "prepare": "babel src -d lib -D"
+    "prepare": "babel src -d lib -D",
+    "watch": "babel src -w -d lib -D"
   },
   "files": [
     "lib/",
@@ -24,10 +25,11 @@
     "@babel/preset-react": "^7.12.1"
   },
   "dependencies": {
+    "@sanity/uuid": "^3.0.1",
+    "prop-types": "^15.7.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "prop-types": "^15.7.2",
-    "@sanity/uuid": "^3.0.1",
-    "react-sortable-hoc": "^1.11.0"
+    "react-sortable-hoc": "^1.11.0",
+    "slim-object-hash": "^0.1.2"
   }
 }
