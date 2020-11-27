@@ -5,6 +5,8 @@ import Table from './table';
 import PatchEvent, { set, unset, insert } from 'part:@sanity/form-builder/patch-event';
 import ButtonGrid from 'part:@sanity/components/buttons/button-grid';
 import Button from 'part:@sanity/components/buttons/default';
+import ConfirmationDialog from 'part:@sanity/components/dialogs/confirm';
+
 
 
 const createPatchFrom = value => {
@@ -19,6 +21,11 @@ class RowsInput extends React.Component {
     }).isRequired,
     value: PropTypes.array,
     onChange: PropTypes.func.isRequired,
+  };
+
+  state = {
+    dialogMsg: null,
+    dialogCb: null,
   };
 
   getTableTypes = () => {
@@ -166,9 +173,47 @@ class RowsInput extends React.Component {
 
   }
 
+  onRemoveRowRequest = index => {
+    this.setState({
+      dialogMsg: 'Are you sure you want to delete the table row?',
+      dialogCb: () => {
+        this.removeRow(index);
+        this.closeDialog();
+      },
+    });
+  }
+
+  onRemoveColumnRequest = index => {
+    this.setState({
+      dialogMsg: 'Are you sure you want to delete the table column?',
+      dialogCb: () => {
+        this.removeColumn(index);
+        this.closeDialog();
+      },
+    });
+  }
+
+  onClearRequest = () => {
+    this.setState({
+      dialogMsg: 'Are you sure you want to clear the table?',
+      dialogCb: () => {
+        this.clear();
+        this.closeDialog();
+      },
+    });
+  }
+
+  closeDialog = () => {
+    this.setState({
+      dialogMsg: null,
+      dialogCb: null,
+    });
+  }
+
   render() {
     const { type, value } = this.props;
     const { title, description } = type;
+    const { dialogMsg, dialogCb } = this.state;
 
     const table =
       value && value.length ? (
@@ -176,8 +221,8 @@ class RowsInput extends React.Component {
           rows={value}
           updateStringCell={this.updateStringCell}
           onEvent={this.propagateEvent}
-          removeColumn={this.removeColumn}
-          removeRow={this.removeRow}
+          removeColumn={this.onRemoveColumnRequest}
+          removeRow={this.onRemoveRowRequest}
           tableTypes={this.getTableTypes()}
           handleSortEnd={this.handleSortEnd}
         />
@@ -191,7 +236,7 @@ class RowsInput extends React.Component {
         <Button inverted onClick={this.addColumn}>
           Add Column
         </Button>
-        <Button inverted color="danger" onClick={this.clear}>
+        <Button inverted color="danger" onClick={this.onClearRequest}>
           Clear
         </Button>
       </ButtonGrid>
@@ -201,12 +246,24 @@ class RowsInput extends React.Component {
       </Button>
     );
 
+    const confirmationDialog = dialogMsg && dialogCb ? (
+      <ConfirmationDialog
+        onConfirm={dialogCb}
+        onCancel={this.closeDialog}
+        confirmColor="danger"
+        confirmButtonText="Confirm"
+      >
+        {dialogMsg}
+      </ConfirmationDialog>
+    ) : null;
+
     return (
       <div>
         <h3>{title}</h3>
         <h5>{description}</h5>
         {table}
         {buttons}
+        {confirmationDialog}
       </div>
     );
   }
