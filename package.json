@@ -1,6 +1,6 @@
 {
   "name": "@ssfbank/sanity-plugin-byo-table",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Input component for your own table schema type for Sanity CMS",
   "main": "lib/schema/table.js",
   "scripts": {
